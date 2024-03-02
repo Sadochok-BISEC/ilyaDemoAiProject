@@ -1,0 +1,54 @@
+body{
+    background: #2c2c2c;
+}
+
+main_content .base_center{
+    float: center;
+    color: #fff;
+    margin-top: 100px;
+    margin-left: 140px;
+    text-align: center;
+    width: 75%;
+}
+
+main_content .base_center h1{font-size: 50px;}
+main_content .base_center p{max-width: 50px; margin: 20px auto;}
+
+
+.button{
+  display: inline-block;
+  padding: 10px 50px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 10px;
+  margin: 4px 20px;
+}
+
+.button:active{
+  transform: translateY(3px);
+}
+
+.button:hover{
+
+}
+
+#sign_up_btn:active{
+  background-color: #FFD60A;
+}
+
+#sign_up_btn{
+  background-color: #eeba0b;
+}
+
+#log_in_btn:active{
+  background-color: #28affa;
+}
+
+#log_in_btn{
+  background-color: #2f94c6;
+  width: 23%;
+}
+

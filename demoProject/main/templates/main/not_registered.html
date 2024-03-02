@@ -1,0 +1,20 @@
+{% extends 'main/auth_layout.html' %}
+
+{% block title %} {{obj_tab_titles.not_registered_page}} {% endblock %}
+
+{% block content %}
+    <div class="base_center">
+        {% if user.is_authenticated %}
+        <h1>{{obj_message_titles.hello}}</h1>
+        <p1> Это страница не авторизованных пользователей!</p1><p></p>
+            <p1>Войдите в систему, чтобы продолжить использование сайта</p1>
+            <p></p>
+          <button id="log_in_btn" class="button" onclick="location.href='{% url 'login' %}'">Войти</button>
+      {% else %}
+        <h1>{{obj_message_titles.hello_question}}</h1>
+        <p1> Это страница не зарегистрированных пользователей!</p1><p></p>
+        <p1>Зарегистрируйтесь в системе, чтобы продолжить использование сайта</p1><p></p>
+          <button id="sign_up_btn" class="button" onclick="location.href='{% url 'signup' %}'">Зарегистрироваться</button>
+      {% endif %}
+    </div>
+{% endblock %}

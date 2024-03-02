@@ -1,0 +1,62 @@
+body{
+    background: #2c2c2c;
+}
+
+aside{
+    float: left;
+    background: #181818;
+    width: 20%;
+    padding: 2.5%;
+    height: 100vh;
+    color: #fff;
+    border-right: 5px solid #4d4d4d;
+}
+
+aside img{
+    width: 80px;
+    float: left;
+}
+
+aside .fanLogo{
+    font-size: 15px;
+    margin-left: 0px;
+    font-weight: bold;
+    position: relative;
+    top: 8px;
+}
+
+aside h3{
+    margin-top: 40px;
+    font-size: 28px;
+}
+
+aside ul {list-style: none}
+aside ul li{
+    color: #fff;
+    display: block;
+    margin-top: 20px;
+    transition: transform .4s ease;
+}
+
+/*
+    Line backlight
+    color: #eb5959 red is default
+           #5959eb deep-blue
+           #59a2eb light-blue
+*/
+aside ul li:hover, aside ul a:hover{
+    color: #eb5959;
+    text-decoration: none;
+    transform: scale(1.05);
+}
+
+main .base_center{
+    float: left;
+    color: #fff;
+    margin-top: 100px;
+    text-align: center;
+    width: 75%;
+}
+
+main .base_center h1{font-size: 50px;}
+main .base_center p{max-width: 50px; margin: 20px auto;}

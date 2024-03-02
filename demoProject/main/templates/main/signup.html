@@ -1,0 +1,25 @@
+{% extends 'main/auth_layout.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %} {{obj_tab_titles.login_page}} {% endblock %}
+
+{% block content %}
+  <div class="base_center">
+      <h1>Регистрация аккаунта</h1>
+        <p1>Заполните форму регистрации</p1>
+  <form method="POST">
+    {% csrf_token %}
+      <div class="form-group">
+        <br>
+    {% render_field form.username type="text" class="form-control" id="exampleInputUsername" placeholder="Имя пользователя" %}
+        <br>
+    {% render_field form.password1 type="password" class="form-control" id="exampleInputPassword" placeholder="Пароль" %}
+         <br>
+    {% render_field form.password2 type="password" class="form-control" id="exampleInputPassword1" placeholder="Повторить пароль" %}
+      </div>
+<button id="sign_up_btn" class="button" onclick="location.href='{% url 'empty_home' %}'">Зарегистрироваться</button>
+  </form>
+      <button id="log_in_btn" class="button" onclick="location.href='{% url 'login' %}'">Войти</button>
+  </div>
+{% endblock %}

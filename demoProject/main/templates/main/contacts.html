@@ -1,0 +1,15 @@
+{% extends 'main/layout.html' %}
+
+{% block title %} {{obj_tab_titles.contacts_page}} {% endblock %}
+
+{% block content %}
+    <div class="contact_information">
+        <h1>{{obj_message_titles.contacts}}</h1>
+        <p></p>
+        <p1>{{obj_contacts_info.author_name}}</p1>
+        <p></p>
+        <p1>{{obj_contacts_info.email}}</p1>
+        <p></p>
+        <p1>{{obj_contacts_info.phone_number}}</p1>
+    </div>
+{% endblock %}
