@@ -13,8 +13,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
-    path('api/token/', views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('main.urls')),
+    #path('api/', include('main.urls')),
+    #path("", include("main.urls", namespace="main")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

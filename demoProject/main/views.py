@@ -3,14 +3,17 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from .forms import RegisterForm
-from .models import DemoAUser
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
 
 import jwt, datetime
+
+from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from . import serializers
 
 dataTxt = {
     # In the form(on the right)
@@ -50,23 +53,6 @@ def about(request):
 def contacts(request):
     return render(request, 'main/contacts.html', dataTxt)
 
-# User authentication
-def login_view(request):
-    return render(request, 'main/login.html', dataTxt)
-
-class SignUpView(CreateView):
-    form_class = RegisterForm
-    template_name = 'main/signup.html'
-    success_url = '/demoProject/home'
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-
-def signup_view(request):
-    return render(request, 'main/signup.html', dataTxt)
-
 def logout_view(request):
     return render(request, 'main/not_registered.html', dataTxt)
 
@@ -75,7 +61,8 @@ def logout_view(request):
 
 # JWT TOKEN REGISTRATION
 
-class RegisterView(APIView):
+# Custom jwt
+'''class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -137,4 +124,71 @@ class LogoutView(APIView):
             'message':'success'
         }
         #render(request, 'main/not_registered.html', dataTxt)
-        return response
+        return response'''
+
+
+#from .models import Profile
+
+User = get_user_model()
+
+class UserRegisterationAPIView(GenericAPIView):
+    """
+    An endpoint for the client to create a new User.
+    """
+
+    permission_classes = (AllowAny,)
+    serializer_class = serializers.UserRegisterationSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        token = RefreshToken.for_user(user)
+        data = serializer.data
+        data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
+        return Response(data, status=status.HTTP_201_CREATED)
+
+class UserLoginAPIView(GenericAPIView):
+    """
+    An endpoint to authenticate existing users using their email and password.
+    """
+
+    permission_classes = (AllowAny,)
+    serializer_class = serializers.UserLoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        serializer = serializers.CustomUserSerializer(user)
+        token = RefreshToken.for_user(user)
+        data = serializer.data
+        data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
+        return Response(data, status=status.HTTP_200_OK)
+
+class UserLogoutAPIView(GenericAPIView):
+    """
+    An endpoint to logout users.
+    """
+
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UserAPIView(RetrieveUpdateAPIView):
+    """
+    Get, Update user information
+    """
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.CustomUserSerializer
+
+    def get_object(self):
+        return self.request.user
